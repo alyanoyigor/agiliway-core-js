@@ -114,3 +114,61 @@ const usersTotalAge = userList.reduce(
 // some, every
 const isExistUser = userList.some((user) => user.name === 'Alex'); // true
 const isAllUsersAreAdult = userList.every((user) => user.age > adultAge); // false
+
+// at
+const lastUser = userList.at(-1);
+
+// copyWithin
+copyUserList = [...userList];
+copyUserList.copyWithin(-1, -2, -1);
+/*
+  { name: 'Alex', age: 18 },
+  { name: 'Ann', age: 25 },
+  { name: 'John', age: 29 },
+  { name: 'Alice', age: 35 },
+  { name: 'Alice', age: 35 },
+*/
+
+// values, keys, entries
+const iteratorEntries = userList.entries();
+const iteratorValues = userList.values();
+const iteratorKeys = userList.keys();
+const iteratorEntriesUserList = [];
+const getAllUsers = (iterator, array) => {
+  const { value, done } = iterator.next();
+  if (done) return;
+  array.push(value);
+  return getAllUsers(iterator, array);
+};
+getAllUsers(iteratorEntries, iteratorEntriesUserList);
+
+// fill
+copyUserList = [...userList];
+copyUserList.fill(lastUser);
+/*
+  { name: 'Chris', age: 16 },
+  { name: 'Chris', age: 16 },
+  { name: 'Chris', age: 16 },
+  { name: 'Chris', age: 16 },
+  { name: 'Chris', age: 16 },
+*/
+
+// flat, Array.isArray
+const nestedNumbersArray = [0, [[1], 2], [3, [4, [5]]], [6]];
+const flattenArray = (array) => {
+  const flatArray = array.flat(1);
+  const isExistArrayInArray = flatArray.some((element) =>
+    Array.isArray(element)
+  );
+  if (isExistArrayInArray) {
+    return flattenArray(flatArray);
+  }
+  return flatArray;
+};
+const flatNumbersArray = flattenArray(nestedNumbersArray);
+
+// Array.of
+Array.of(1, 2, 3); // [1, 2, 3]
+
+// Array.from
+Array.from(Array(3), (_, index) => index + 1); // [1, 2, 3]
