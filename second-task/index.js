@@ -79,8 +79,8 @@ function partialAny() {
 // 7
 function bind(fn, context) {
   return function () {
-    var args = Array.prototype.slice.call(arguments);
-    return fn.apply(context, args);
+    var argumentList = Array.prototype.slice.call(arguments);
+    return fn.apply(context, argumentList);
   };
 }
 
@@ -92,9 +92,9 @@ function pluck(objectsArray, fieldName) {
 }
 
 // 9
-function filter(arr, fn) {
+function filter(array, fn) {
   var result = [];
-  arr.forEach(function (item) {
+  array.forEach(function (item) {
     var isCorrectItem = fn(item);
     if (isCorrectItem) {
       result.push(item);
@@ -106,8 +106,8 @@ function filter(arr, fn) {
 // 10
 function count(obj) {
   var count = 0;
-  for (var i in obj) {
-    if (obj.hasOwnProperty(i)) {
+  for (var property in obj) {
+    if (obj.hasOwnProperty(property)) {
       count++;
     }
   }
