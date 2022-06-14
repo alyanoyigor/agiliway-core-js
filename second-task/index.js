@@ -20,20 +20,24 @@ function sequence(start, step) {
 // 2
 function take(fn, count) {
   var array = [];
+
   for (var index = 0; index < count; index++) {
     var item = fn();
     array.push(item);
   }
+
   return array;
 }
 
 // 3
 function map(fn, array) {
   var resultArray = [];
+
   array.forEach(function (item) {
     var changedItem = fn(item);
     resultArray.push(changedItem);
   });
+
   return resultArray;
 }
 
@@ -50,9 +54,11 @@ function partial() {
   var firstFuncArgs = Array.prototype.slice.call(arguments),
     firstFunc = firstFuncArgs[0],
     firstFuncParams = firstFuncArgs.slice(1);
+
   return function () {
     var secondFuncArgs = Array.prototype.slice.call(arguments);
     var argumentList = firstFuncParams.concat(secondFuncArgs);
+
     return firstFunc.apply(null, argumentList);
   };
 }
@@ -60,10 +66,13 @@ function partial() {
 // 6
 function partialAny() {
   var firstFuncArgs = Array.prototype.slice.call(arguments);
+
   return function () {
     var firstFunc = firstFuncArgs[0],
       firstFuncParams = firstFuncArgs.slice(1);
+
     var secondFuncParams = Array.prototype.slice.call(arguments);
+
     var argumentList = firstFuncParams
       .map(function (param) {
         if (param === undefined) {
@@ -72,6 +81,7 @@ function partialAny() {
         return param;
       })
       .concat(secondFuncParams);
+
     return firstFunc.apply(null, argumentList);
   };
 }
@@ -94,22 +104,26 @@ function pluck(objectsArray, fieldName) {
 // 9
 function filter(array, fn) {
   var result = [];
+
   array.forEach(function (item) {
     var isCorrectItem = fn(item);
     if (isCorrectItem) {
       result.push(item);
     }
   });
+
   return result;
 }
 
 // 10
 function count(obj) {
   var count = 0;
+
   for (var property in obj) {
     if (obj.hasOwnProperty(property)) {
       count++;
     }
   }
+
   return count;
 }
