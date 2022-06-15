@@ -2,17 +2,11 @@
 
 // 1
 function sequence(start, step) {
-  if (start === undefined) {
-    start = 0;
-  }
-
-  if (step === undefined) {
-    step = 1;
-  }
-
+  start = start || 0;
+  step = step || 1;
   var result = start - step;
   return function () {
-    result = result + step;
+    result += step;
     return result;
   };
 }
@@ -20,24 +14,19 @@ function sequence(start, step) {
 // 2
 function take(fn, count) {
   var array = [];
-
-  for (var index = 0; index < count; index++) {
-    var item = fn();
-    array.push(item);
+  while (count--) {
+    array.push(fn());
   }
-
   return array;
 }
 
 // 3
 function map(fn, array) {
   var resultArray = [];
-
-  array.forEach(function (item) {
-    var changedItem = fn(item);
-    resultArray.push(changedItem);
-  });
-
+  for (var index = 0; index < array.length; index++) {
+    var changedElement = fn(array[index]);
+    resultArray.push(changedElement);
+  }
   return resultArray;
 }
 
@@ -51,9 +40,9 @@ function fmap(firstFunc, secondFunc) {
 
 // 5
 function partial() {
-  var firstFuncArgs = Array.prototype.slice.call(arguments),
-    firstFunc = firstFuncArgs[0],
-    firstFuncParams = firstFuncArgs.slice(1);
+  var firstFuncArgs = Array.prototype.slice.call(arguments);
+  var firstFunc = firstFuncArgs[0];
+  var firstFuncParams = firstFuncArgs.slice(1);
 
   return function () {
     var secondFuncArgs = Array.prototype.slice.call(arguments);
@@ -68,20 +57,17 @@ function partialAny() {
   var firstFuncArgs = Array.prototype.slice.call(arguments);
 
   return function () {
-    var firstFunc = firstFuncArgs[0],
-      firstFuncParams = firstFuncArgs.slice(1);
-
+    var firstFunc = firstFuncArgs[0];
+    var firstFuncParams = firstFuncArgs.slice(1);
     var secondFuncParams = Array.prototype.slice.call(arguments);
 
-    var argumentList = firstFuncParams
-      .map(function (param) {
-        if (param === undefined) {
-          return secondFuncParams.shift();
-        }
-        return param;
-      })
-      .concat(secondFuncParams);
+    for (var index = 0; index < firstFuncParams.length; index++) {
+      if (firstFuncParams[index] === undefined) {
+        firstFuncParams[index] = secondFuncParams.shift();
+      }
+    }
 
+    var argumentList = firstFuncParams.concat(secondFuncParams);
     return firstFunc.apply(null, argumentList);
   };
 }
@@ -96,34 +82,24 @@ function bind(fn, context) {
 
 // 8
 function pluck(objectsArray, fieldName) {
-  return objectsArray.map(function (object) {
-    return object[fieldName];
-  });
+  var result = [];
+  for (var index = 0; index < objectsArray.length; index++) {
+    result.push(objectsArray[index][fieldName]);
+  }
+  return result;
 }
 
 // 9
 function filter(array, fn) {
   var result = [];
-
-  array.forEach(function (item) {
-    var isCorrectItem = fn(item);
-    if (isCorrectItem) {
-      result.push(item);
-    }
-  });
-
+  for (var index = 0; index < array.length; index++) {
+    var item = array[index];
+    fn(item) && result.push(item);
+  }
   return result;
 }
 
 // 10
 function count(obj) {
-  var count = 0;
-
-  for (var property in obj) {
-    if (obj.hasOwnProperty(property)) {
-      count++;
-    }
-  }
-
-  return count;
+  return Object.keys(obj).length;
 }
